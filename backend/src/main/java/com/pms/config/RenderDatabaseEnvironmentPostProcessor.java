@@ -29,12 +29,13 @@ public class RenderDatabaseEnvironmentPostProcessor implements EnvironmentPostPr
 
         Map<String, Object> props = new HashMap<>();
 
-        if (dbUrl != null && dbUrl.startsWith("jdbc:postgresql:")) {
+        // Prefer Render-managed DATABASE_URL when present to avoid malformed manual DB_URL values.
+        if (databaseUrl != null && isPostgresUri(databaseUrl)) {
+            putParsedPostgres(props, databaseUrl);
+        } else if (dbUrl != null && dbUrl.startsWith("jdbc:postgresql:")) {
             props.put("spring.jpa.database-platform", PG_DIALECT);
         } else if (dbUrl != null && isPostgresUri(dbUrl)) {
             putParsedPostgres(props, dbUrl);
-        } else if (databaseUrl != null && isPostgresUri(databaseUrl)) {
-            putParsedPostgres(props, databaseUrl);
         }
 
         if (props.isEmpty()) {
