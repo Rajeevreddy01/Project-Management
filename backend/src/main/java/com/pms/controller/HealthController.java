@@ -9,11 +9,6 @@ import org.springframework.web.bind.annotation.RestController;
 @RestController
 public class HealthController {
 
-    @GetMapping("/")
-    public ResponseEntity<Map<String, String>> root() {
-        return ResponseEntity.ok(Map.of("message", "PMS backend is running", "health", "/health"));
-    }
-
     @GetMapping("/health")
     public ResponseEntity<Map<String, String>> health() {
         return ResponseEntity.ok(Map.of("status", "ok"));

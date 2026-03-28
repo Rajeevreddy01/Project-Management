@@ -50,6 +50,9 @@ public class SecurityConfig {
             .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
             .authorizeHttpRequests(auth -> auth
                 .requestMatchers("/").permitAll()
+                .requestMatchers("/index.html", "/favicon.ico", "/assets/**").permitAll()
+                .requestMatchers("/login", "/register", "/dashboard").permitAll()
+                .requestMatchers("/projects/**", "/tasks/**", "/users/**").permitAll()
                 .requestMatchers("/health").permitAll()
                 .requestMatchers("/api/auth/**").permitAll()
                 .requestMatchers(HttpMethod.GET, "/api/dashboard/**").hasAnyRole("ADMIN", "MANAGER", "USER")
